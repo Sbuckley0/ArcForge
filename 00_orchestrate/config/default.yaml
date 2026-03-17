@@ -1,0 +1,20 @@
+﻿---
+# Archim8 Default Configuration
+# Safe committed defaults — no real paths or passwords.
+# Developer overrides: 00_orchestrate/config/archim8.local.env (gitignored)
+
+project:
+  name: "archim8-analysis"
+  version: "0.1.0"
+
+# ---------------------------------------------------------------------------
+# Neo4j connection
+# Must match 02_store/neo4j/docker/docker-compose.yml and archim8.env.
+# ---------------------------------------------------------------------------
+graph:
+  backend: "neo4j"
+  neo4j:
+    uri: "bolt://localhost:7687"
+    user: "neo4j"
+    password: "password"
+    database: "archim8"

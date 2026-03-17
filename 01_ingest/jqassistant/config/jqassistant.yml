@@ -1,0 +1,84 @@
+﻿# jQAssistant 2.x Configuration for Archim8
+# CLI version: 2.9.1 (Neo4j v5 distribution)
+# Docs: https://jqassistant.github.io/jqassistant/current/#_configuration
+#
+# Phase 1: minimal config (store URI, credentials, scan safety)
+# Phase 2: adds scan scope — excludes -sources.jar, -tests.jar, original-*.jar
+# Phase 3: adds analyze rules and report config
+
+jqassistant:
+
+  # ---------------------------------------------------------------------------
+  # Store — external Neo4j via Bolt (running via docker-up)
+  #
+  # IMPORTANT: In jQA 2.x, credentials must be under store.remote.* NOT store.*
+  #
+  # URI uses the Docker Compose service name 'neo4j' as the hostname.
+  # This works when jQA runs as a container on the same Docker network.
+  # ---------------------------------------------------------------------------
+  store:
+    uri: bolt://neo4j:7687
+    remote:
+      username: neo4j
+      password: password
+      # Local Docker Neo4j has no TLS — must set encryption: false
+      encryption: false
+
+  # ---------------------------------------------------------------------------
+  # Scan — scope configuration
+  #
+  # CRITICAL: reset defaults to true in jQA 2.x which would DELETE ALL NODES
+  # including our :Jar/jdeps graph. Always set reset: false.
+  #
+  # Phase 1: scan path is passed as -f <ScanPath> on the CLI, scans everything
+  # Phase 2: scanner properties narrow the scope to main JARs + POMs only
+  #
+  # file.exclude patterns use * and ? wildcards applied against the full path.
+  #   *-sources.jar    — Maven sources classifier JARs  (86 in reactor)
+  #   *-tests.jar      — Maven tests classifier JARs   (132 in reactor)
+  #   *original-*.jar  — Shaded/fat JAR intermediates  (  1 in reactor)
+  #
+  # After exclusions the :Java:Artifact count should drop from ~309 → ~89,
+  # matching the 89 main-JAR nodes already loaded from jdeps.
+  #
+  # maven3.dependencies.scan: "false" prevents the Maven3 scanner from
+  # resolving and scanning declared POM dependencies from Maven Central.
+  # ---------------------------------------------------------------------------
+  scan:
+    reset: false
+    continue-on-error: true
+
+    properties:
+      file.exclude: "*-sources.jar,*-tests.jar,*original-*.jar"
+      maven3.dependencies.scan: "false"
+
+  # ---------------------------------------------------------------------------
+  # Analyze — rules engine (Phase 3) ✅ Complete
+  #
+  # Rule format: XML (schema v1.8 with v2.9 element names).
+  # AsciiDoc was attempted but [[Namespace:Id]] block IDs with colons are not
+  # parsed correctly by Asciidoctorj in jQA 2.x. XML is used instead.
+  #
+  # rule.directory uses an ABSOLUTE path inside the container:
+  #   /jqassistant/rules/baseline  (volume-mounted from 01_ingest/jqassistant/rules)
+  #
+  # jQA 2.x resolves relative rule.directory paths from the process working
+  # directory (/jqassistant), NOT the config file location. Use absolute paths.
+  #
+  # report.directory: writable volume mounted by docker-compose:
+  #   host: 05_deliver/input/01_ingest/jqa-report
+  #   container: /jqassistant/report
+  #
+  # failOn: none  — violations warn, do not fail the pipeline.
+  #                 First-run baseline: 7 violations found (review required).
+  #                 To escalate: change failOn: none → failOn: major
+  # ---------------------------------------------------------------------------
+  analyze:
+    rule:
+      directory: /jqassistant/rules/baseline
+    groups:
+      # - YourApp:Default  # set automatically by: make jqa-generate-rules
+    report:
+      directory: /jqassistant/report
+    warn: true
+    failOn: none

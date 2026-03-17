@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  Architecture Layer Rules — Project Specific
+  This file is a PLACEHOLDER. Generate your rules from the live graph:
+
+    1. make docker-up && make jqa-scan      (populate Neo4j)
+    2. make jqa-discover-layers             (write layers.yaml)
+    3. Review layers.yaml (optional)
+    4. make jqa-generate-rules              (writes generated-constraints.xml)
+
+  The generated file: 01_ingest/jqassistant/rules/baseline/generated-constraints.xml
+  jqassistant.yml groups entry is updated automatically.
+-->
+<jqassistant-rules xmlns="http://schema.jqassistant.com/rule/v1.8">
+  <!-- Rules are generated here by: make jqa-generate-rules -->
+</jqassistant-rules>

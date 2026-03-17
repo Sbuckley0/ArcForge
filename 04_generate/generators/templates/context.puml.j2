@@ -1,0 +1,21 @@
+@startuml {{ system_name }}_context
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+LAYOUT_WITH_LEGEND()
+
+title System Context Diagram - {{ system_name }}
+
+Person(user, "User", "Application user")
+System({{ system_id }}, "{{ system_name }}", "{{ system_description }}")
+
+{% for external in external_systems %}
+System_Ext({{ external.id }}, "{{ external.name }}", "{{ external.description }}")
+{% endfor %}
+
+Rel(user, {{ system_id }}, "Uses")
+
+{% for rel in relationships %}
+Rel({{ rel.from }}, {{ rel.to }}, "{{ rel.label }}")
+{% endfor %}
+
+@enduml

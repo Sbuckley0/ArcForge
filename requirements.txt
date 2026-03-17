@@ -1,0 +1,15 @@
+﻿# Archim8 Python requirements
+# Install: c:/python314/python.exe -m pip install -r requirements.txt
+
+# Phase 4 — view generation + PlantUML
+neo4j>=5.0
+jinja2>=3.1
+
+# Phase 8 — MCP server (replaces LangGraph orchestrator)
+mcp>=1.0               # FastMCP server; tools exposed to GitHub Copilot Chat
+python-dotenv>=1.0     # archim8.local.env loading at MCP server startup
+pyyaml>=6.0
+
+# Utilities
+pydantic>=2.0
+pydantic-settings>=2.0

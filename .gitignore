@@ -1,0 +1,137 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Config overrides (local environment)
+config/local_override.yaml
+config/*.local.yaml
+00_orchestrate/config/archim8.local.env
+
+# Project-specific layer inference outputs (not repo artefacts)
+01_ingest/jqassistant/config/layers.yaml
+01_ingest/jqassistant/config/constraint-context.yaml
+
+# Generated artifacts
+output/
+generated/
+exports/
+
+# Database data
+data/
+*.db
+*.sqlite
+
+# Logs
+logs/
+*.log
+
+# jQAssistant outputs and runtime (embedded store + target reports only — NOT 01_ingest/jqassistant/)
+.jqassistant/
+**/target/jqassistant/
+**/.jqassistant/
+
+# jQAssistant CLI binary (downloaded via make jqa-install)
+01_ingest/jqassistant/bin/
+
+# jQAssistant scan + analysis logs (produced per run)
+05_deliver/input/01_ingest/jqa-scan.log
+05_deliver/input/01_ingest/jqa-analyze.log
+
+# Internal planning and audit files (kept out of repo history)
+ARCHIM8-TRACKER.md
+MCP-MIGRATION-AUDIT.md
+05_deliver/input/01_ingest/.jqa-scan-ok
+05_deliver/input/01_ingest/.jqa-analyze-ok
+
+# jQAssistant rule reports (moved to 03_query by make jqa-export)
+05_deliver/input/03_query/jqa-violations.csv
+05_deliver/input/03_query/jqa-metrics.csv
+05_deliver/input/03_query/module-deps-maven.csv
+05_deliver/input/03_query/api-surface.csv
+05_deliver/input/03_query/key-abstractions.csv
+
+# Setup markers (local machine state — not part of the repo)
+.archim8-doctor-ok
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Neo4j runtime data (Docker volume contents — not committed)
+02_store/neo4j/docker/data/
+02_store/neo4j/docker/logs/
+
+# Neo4j docker env (contains real paths/passwords)
+02_store/neo4j/docker/.env
+
+# Neo4j import/export folder contents (CSVs dropped here are not committed)
+02_store/neo4j/docker/import/*
+!02_store/neo4j/docker/import/README.md
+02_store/neo4j/docker/export/*
+!02_store/neo4j/docker/export/README.md
+
+# 05_deliver pipeline outputs (generated — not committed)
+05_deliver/input/01_ingest/*
+!05_deliver/input/01_ingest/README.md
+!05_deliver/input/01_ingest/.gitkeep
+05_deliver/input/02_store/*
+!05_deliver/input/02_store/README.md
+!05_deliver/input/02_store/.gitkeep
+05_deliver/input/03_query/*
+!05_deliver/input/03_query/README.md
+!05_deliver/input/03_query/.gitkeep
+05_deliver/input/04_generate/*
+!05_deliver/input/04_generate/README.md
+!05_deliver/input/04_generate/.gitkeep
+05_deliver/output/*
+!05_deliver/output/README.md
+!05_deliver/output/.gitkeep
+
+# jQAssistant HTML report (written to deliver/input by make jqa-analyze)
+05_deliver/input/01_ingest/jqa-report/
+
+# Local env catch-all (belt-and-suspenders over the specific entry above)
+*.local.env
+
+# Postgres data
+docker/postgres/data/
+
+# Qdrant data
+docker/qdrant/data/
